@@ -8,7 +8,9 @@ const PORT = process.env.PORT || 5000;
 
 app.use(cors());
 app.use(express.json());
-app.use(express.static(__dirname));
+
+// Serve static files
+app.use(express.static(path.join(__dirname, '.')));
 
 const TMDB_API_KEY = '1330fb5d167bfc239614afd096e1fff2';
 
@@ -54,12 +56,31 @@ app.get('/api/tvshow/:id', async (req, res) => {
   }
 });
 
-// Serve index.html for all other routes (for client-side routing)
+// Serve HTML pages
+app.get('/', (req, res) => {
+  res.sendFile(path.join(__dirname, 'index.html'));
+});
+
+app.get('/details.html', (req, res) => {
+  res.sendFile(path.join(__dirname, 'details.html'));
+});
+
+app.get('/library.html', (req, res) => {
+  res.sendFile(path.join(__dirname, 'library.html'));
+});
+
+app.get('/signin.html', (req, res) => {
+  res.sendFile(path.join(__dirname, 'signin.html'));
+});
+
+// Fallback for any other routes
 app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, 'index.html'));
 });
 
-app.listen(PORT, () => console.log(`Server running on http://localhost:${PORT}`));
+if (process.env.NODE_ENV !== 'production') {
+  app.listen(PORT, () => console.log(`Server running on http://localhost:${PORT}`));
+}
 
 // Export for Vercel
 module.exports = app;
