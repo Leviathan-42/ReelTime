@@ -1,9 +1,56 @@
+import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
+import { getAuth, onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js';
+import { getFirestore, doc, setDoc, getDoc } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
+
+const firebaseConfig = {
+  apiKey: "AIzaSyCcpdmHgPyu_KL123f8rYmiuZQhcwev-1E",
+  authDomain: "reeltime-fccfe.firebaseapp.com",
+  projectId: "reeltime-fccfe",
+  storageBucket: "reeltime-fccfe.firebasestorage.app",
+  messagingSenderId: "239464299835",
+  appId: "1:239464299835:web:887d7d0e57ca612ec44b1e",
+  measurementId: "G-ZC5J3N2L88"
+};
+
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db = getFirestore(app);
+
 const urlParams = new URLSearchParams(window.location.search);
 const showId = urlParams.get('id');
 const API_URL = window.location.origin;
 
 let userRating = 0;
 let isFavorite = false;
+let currentUser = null;
+
+// Auth state observer
+onAuthStateChanged(auth, async (user) => {
+  currentUser = user;
+  if (user && showId) {
+    // Load user data from Firestore
+    await loadUserData();
+  }
+});
+
+async function loadUserData() {
+  if (!currentUser || !showId) return;
+
+  try {
+    const userDocRef = doc(db, 'users', currentUser.uid, 'shows', showId);
+    const userDoc = await getDoc(userDocRef);
+
+    if (userDoc.exists()) {
+      const data = userDoc.data();
+      userRating = data.rating || 0;
+      isFavorite = data.favorite || false;
+      updateStars();
+      updateFavoriteButton();
+    }
+  } catch (error) {
+    console.error('Error loading user data:', error);
+  }
+}
 
 async function loadShowDetails() {
   if (!showId) {
@@ -15,13 +62,6 @@ async function loadShowDetails() {
   try {
     const response = await fetch(`${API_URL}/api/tvshow/${showId}`);
     const show = await response.json();
-
-    // Load saved ratings from localStorage
-    const savedRating = localStorage.getItem(`rating_${showId}`);
-    const savedFavorite = localStorage.getItem(`favorite_${showId}`);
-
-    if (savedRating) userRating = parseInt(savedRating);
-    if (savedFavorite) isFavorite = savedFavorite === 'true';
 
     const posterUrl = show.poster_path
       ? `https://image.tmdb.org/t/p/w500${show.poster_path}`
@@ -73,10 +113,16 @@ async function loadShowDetails() {
 
     // Add star rating functionality
     document.querySelectorAll('.star').forEach(star => {
-      star.addEventListener('click', (e) => {
+      star.addEventListener('click', async (e) => {
+        if (!currentUser) {
+          alert('Please sign in to rate shows');
+          window.location.href = 'signin.html';
+          return;
+        }
+
         const rating = parseInt(e.target.dataset.rating);
         userRating = rating;
-        localStorage.setItem(`rating_${showId}`, rating);
+        await saveUserData();
         updateStars();
       });
 
@@ -91,13 +137,16 @@ async function loadShowDetails() {
     });
 
     // Add favorite functionality
-    document.getElementById('favorite-btn').addEventListener('click', () => {
+    document.getElementById('favorite-btn').addEventListener('click', async () => {
+      if (!currentUser) {
+        alert('Please sign in to add favorites');
+        window.location.href = 'signin.html';
+        return;
+      }
+
       isFavorite = !isFavorite;
-      localStorage.setItem(`favorite_${showId}`, isFavorite);
-      const btn = document.getElementById('favorite-btn');
-      btn.classList.toggle('favorited');
-      btn.querySelector('.heart').textContent = isFavorite ? '❤️' : '🤍';
-      btn.childNodes[2].textContent = isFavorite ? 'Favorited' : 'Add to Favorites';
+      await saveUserData();
+      updateFavoriteButton();
     });
 
   } catch (error) {
@@ -107,11 +156,36 @@ async function loadShowDetails() {
   }
 }
 
+async function saveUserData() {
+  if (!currentUser || !showId) return;
+
+  try {
+    const userDocRef = doc(db, 'users', currentUser.uid, 'shows', showId);
+    await setDoc(userDocRef, {
+      rating: userRating,
+      favorite: isFavorite,
+      updatedAt: new Date().toISOString()
+    }, { merge: true });
+  } catch (error) {
+    console.error('Error saving user data:', error);
+    alert('Failed to save. Please try again.');
+  }
+}
+
 function updateStars() {
   document.querySelectorAll('.star').forEach(star => {
     const rating = parseInt(star.dataset.rating);
     star.classList.toggle('filled', rating <= userRating);
   });
+}
+
+function updateFavoriteButton() {
+  const btn = document.getElementById('favorite-btn');
+  if (btn) {
+    btn.classList.toggle('favorited', isFavorite);
+    btn.querySelector('.heart').textContent = isFavorite ? '❤️' : '🤍';
+    btn.childNodes[2].textContent = isFavorite ? 'Favorited' : 'Add to Favorites';
+  }
 }
 
 function highlightStars(rating) {

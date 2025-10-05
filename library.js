@@ -1,26 +1,63 @@
+import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
+import { getAuth, onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js';
+import { getFirestore, collection, getDocs } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
+
+const firebaseConfig = {
+  apiKey: "AIzaSyCcpdmHgPyu_KL123f8rYmiuZQhcwev-1E",
+  authDomain: "reeltime-fccfe.firebaseapp.com",
+  projectId: "reeltime-fccfe",
+  storageBucket: "reeltime-fccfe.firebasestorage.app",
+  messagingSenderId: "239464299835",
+  appId: "1:239464299835:web:887d7d0e57ca612ec44b1e",
+  measurementId: "G-ZC5J3N2L88"
+};
+
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db = getFirestore(app);
+
+let currentUser = null;
+
+// Auth state observer
+onAuthStateChanged(auth, async (user) => {
+  currentUser = user;
+  if (!user) {
+    // Redirect to sign in if not authenticated
+    alert('Please sign in to view your library');
+    window.location.href = 'signin.html';
+    return;
+  }
+  await loadLibrary();
+});
+
 async function loadLibrary() {
+  if (!currentUser) return;
+
   const favorites = [];
   const rated = [];
 
-  // Get all items from localStorage
-  for (let i = 0; i < localStorage.length; i++) {
-    const key = localStorage.key(i);
+  try {
+    // Get all shows from Firestore
+    const showsCollection = collection(db, 'users', currentUser.uid, 'shows');
+    const showsSnapshot = await getDocs(showsCollection);
 
-    if (key.startsWith('favorite_')) {
-      const showId = key.replace('favorite_', '');
-      const isFavorite = localStorage.getItem(key) === 'true';
-      if (isFavorite) {
+    showsSnapshot.forEach((doc) => {
+      const showId = doc.id;
+      const data = doc.data();
+
+      if (data.favorite) {
         favorites.push(showId);
       }
-    }
 
-    if (key.startsWith('rating_')) {
-      const showId = key.replace('rating_', '');
-      const rating = parseInt(localStorage.getItem(key));
-      if (rating > 0) {
-        rated.push({ showId, rating });
+      if (data.rating && data.rating > 0) {
+        rated.push({ showId, rating: data.rating });
       }
-    }
+    });
+  } catch (error) {
+    console.error('Error loading library:', error);
+    document.getElementById('favorites-container').innerHTML =
+      '<p class="empty-message">Error loading library. Please try again.</p>';
+    return;
   }
 
   // Load favorite shows
@@ -126,5 +163,3 @@ document.querySelectorAll('.tab-btn').forEach(btn => {
     document.getElementById(`${tabName}-tab`).classList.add('active');
   });
 });
-
-loadLibrary();
