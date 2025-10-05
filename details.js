@@ -138,6 +138,8 @@ async function loadShowDetails() {
 
     // Add favorite functionality
     document.getElementById('favorite-btn').addEventListener('click', async () => {
+      console.log('🔵 Favorite button clicked!', { currentUser, isFavorite });
+
       if (!currentUser) {
         alert('Please sign in to add favorites');
         window.location.href = 'signin.html';
@@ -145,6 +147,7 @@ async function loadShowDetails() {
       }
 
       isFavorite = !isFavorite;
+      console.log('🟡 Toggled favorite to:', isFavorite);
       await saveUserData();
       updateFavoriteButton();
     });
@@ -157,15 +160,26 @@ async function loadShowDetails() {
 }
 
 async function saveUserData() {
-  if (!currentUser || !showId) return;
+  if (!currentUser || !showId) {
+    console.error('Cannot save: currentUser or showId is missing', { currentUser, showId });
+    return;
+  }
 
   try {
     const userDocRef = doc(db, 'users', currentUser.uid, 'shows', showId);
+    console.log('Saving to Firestore:', {
+      path: `users/${currentUser.uid}/shows/${showId}`,
+      rating: userRating,
+      favorite: isFavorite
+    });
+
     await setDoc(userDocRef, {
       rating: userRating,
       favorite: isFavorite,
       updatedAt: new Date().toISOString()
     }, { merge: true });
+
+    console.log('✅ Successfully saved to Firestore');
   } catch (error) {
     console.error('Error saving user data:', error);
     alert('Failed to save. Please try again.');
