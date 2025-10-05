@@ -10,14 +10,13 @@
   <button id="theme-toggle" class="theme-toggle" aria-label="Toggle dark mode">
     <span class="theme-icon">☀️</span>
   </button>
+  <a href="signin.html" id="auth-link" class="auth-icon" title="Sign In">👤</a>
   <header>
     <div class="header-layout">
-      <div></div>
       <h1><a href="index.html" class="logo">ReelTime</a></h1>
-      <nav class="header-right">
-        <a href="library.html" class="library-link">My Library</a>
-        <a href="signin.html" id="auth-link" class="auth-icon" title="Sign In">👤</a>
-      </nav>
+    </div>
+    <div class="library-nav">
+      <a href="library.html" class="library-link">My Library</a>
     </div>
     <p>Your favorite TV shows, rated</p>
     <div class="search-bar">
@@ -37,5 +36,6 @@
 
   <script src="theme.js"></script>
   <script src="app.js"></script>
+  <script type="module" src="migrate-to-firestore.js"></script>
 </body>
 </html>

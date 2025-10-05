@@ -55,11 +55,12 @@ header {
   margin-bottom: 40px;
   position: relative;
   z-index: 100;
+  padding-top: 20px;
 }
 
 header h1 {
   font-size: 3rem;
-  margin-bottom: 10px;
+  margin-bottom: 5px;
 }
 
 .logo {
@@ -105,13 +106,7 @@ header h1 {
 }
 
 .header-right {
-  position: absolute;
-  right: 80px;
-  top: 50%;
-  transform: translateY(-50%);
-  display: flex;
-  align-items: center;
-  gap: 20px;
+  display: none;
 }
 
 .library-link {
@@ -121,6 +116,7 @@ header h1 {
   padding: 8px 16px;
   border-radius: 20px;
   transition: background 0.3s ease;
+  display: inline-block;
 }
 
 .library-link:hover,
@@ -129,19 +125,30 @@ header h1 {
 }
 
 .auth-icon {
-  color: white;
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  background: rgba(255, 255, 255, 0.9);
+  border: none;
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+  transition: transform 0.3s ease, background 0.3s ease;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   text-decoration: none;
-  font-size: 1.8rem;
-  padding: 5px;
-  transition: transform 0.3s ease, opacity 0.3s ease;
-  display: inline-block;
-  opacity: 0.7;
+  font-size: 1.5rem;
 }
 
-.auth-icon:hover,
-.auth-icon.active {
-  transform: scale(1.2);
-  opacity: 1;
+.auth-icon:hover {
+  transform: scale(1.1);
+}
+
+body.dark-mode .auth-icon {
+  background: rgba(40, 40, 60, 0.9);
 }
 
 .main-nav {
@@ -168,7 +175,11 @@ header h1 {
 header p {
   font-size: 1.2rem;
   opacity: 0.9;
-  margin-bottom: 20px;
+  margin-bottom: 10px;
+}
+
+.library-nav {
+  margin-bottom: 15px;
 }
 
 .search-bar {
