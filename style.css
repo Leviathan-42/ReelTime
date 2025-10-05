@@ -932,14 +932,23 @@ body.dark-mode .tab-btn.active {
 
   /* Theme Toggle */
   .theme-toggle {
-    width: 40px;
-    height: 40px;
+    width: 45px;
+    height: 45px;
     top: 10px;
     left: 10px;
   }
 
   .theme-icon {
-    font-size: 1.2rem;
+    font-size: 1.3rem;
+  }
+
+  /* Auth Icon */
+  .auth-icon {
+    width: 45px;
+    height: 45px;
+    top: 10px;
+    right: 10px;
+    font-size: 1.3rem;
   }
 }
 
