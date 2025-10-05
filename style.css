@@ -718,3 +718,222 @@ body.dark-mode .tab-btn.active {
   background: #667eea;
   color: white;
 }
+
+/* Mobile Responsive Styles */
+@media (max-width: 768px) {
+  body {
+    padding: 10px;
+  }
+
+  /* Header */
+  header h1 {
+    font-size: 2rem;
+  }
+
+  header p {
+    font-size: 1rem;
+  }
+
+  .header-layout {
+    flex-direction: column;
+    gap: 15px;
+    padding: 0 10px;
+  }
+
+  .header-right {
+    justify-content: center;
+    gap: 15px;
+  }
+
+  .library-link {
+    font-size: 1rem;
+  }
+
+  .main-nav {
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+
+  .main-nav a {
+    font-size: 1rem;
+    padding: 6px 15px;
+  }
+
+  /* Search Bar */
+  .search-bar {
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .search-bar input {
+    width: 100%;
+    font-size: 0.9rem;
+  }
+
+  .search-bar button {
+    width: 100%;
+    font-size: 0.9rem;
+  }
+
+  /* Show Grid */
+  #shows-container {
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 15px;
+  }
+
+  .show-card img {
+    height: 225px;
+  }
+
+  .show-info h3 {
+    font-size: 0.9rem;
+  }
+
+  .rating {
+    font-size: 0.8rem;
+    padding: 4px 8px;
+  }
+
+  .date {
+    font-size: 0.75rem;
+  }
+
+  /* Pagination */
+  #pagination {
+    gap: 10px;
+    margin-top: 20px;
+  }
+
+  #pagination button {
+    padding: 8px 15px;
+    font-size: 0.9rem;
+  }
+
+  #page-info {
+    font-size: 0.9rem;
+  }
+
+  /* Details Page */
+  .details-content {
+    flex-direction: column;
+    padding: 20px;
+    gap: 20px;
+  }
+
+  .detail-poster {
+    width: 100%;
+    height: auto;
+    max-width: 300px;
+    margin: 0 auto;
+  }
+
+  .detail-info h2 {
+    font-size: 1.8rem;
+  }
+
+  .detail-meta {
+    gap: 10px;
+  }
+
+  .detail-meta span {
+    font-size: 0.8rem;
+    padding: 6px 10px;
+  }
+
+  .overview {
+    font-size: 1rem;
+  }
+
+  .user-interaction {
+    flex-direction: column;
+    gap: 30px;
+  }
+
+  .stars {
+    font-size: 2rem;
+    gap: 5px;
+  }
+
+  .favorite-btn {
+    padding: 12px 20px;
+    font-size: 1rem;
+    width: 100%;
+    justify-content: center;
+  }
+
+  .backdrop {
+    height: 250px;
+  }
+
+  /* Library Tabs */
+  .library-tabs {
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+
+  .tab-btn {
+    padding: 10px 20px;
+    font-size: 1rem;
+  }
+
+  .library-grid {
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 15px;
+  }
+
+  /* Auth Page */
+  .auth-box {
+    padding: 30px 20px;
+  }
+
+  .auth-box h2 {
+    font-size: 1.5rem;
+  }
+
+  #sign-in-form input {
+    padding: 12px;
+    font-size: 0.9rem;
+  }
+
+  .auth-btn {
+    padding: 12px;
+    font-size: 1rem;
+  }
+
+  /* Theme Toggle */
+  .theme-toggle {
+    width: 40px;
+    height: 40px;
+    top: 10px;
+    left: 10px;
+  }
+
+  .theme-icon {
+    font-size: 1.2rem;
+  }
+}
+
+/* Extra Small Phones */
+@media (max-width: 480px) {
+  header h1 {
+    font-size: 1.5rem;
+  }
+
+  #shows-container,
+  .library-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+  }
+
+  .show-card img {
+    height: 200px;
+  }
+
+  .detail-info h2 {
+    font-size: 1.5rem;
+  }
+
+  .stars {
+    font-size: 1.5rem;
+  }
+}
