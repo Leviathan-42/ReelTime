@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Show Details - ReelTime</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <button id="theme-toggle" class="theme-toggle" aria-label="Toggle dark mode">
+    <span class="theme-icon">☀️</span>
+  </button>
+  <header>
+    <div class="header-layout">
+      <a href="index.html" class="back-link">← Back to Shows</a>
+      <h1><a href="index.html" class="logo">ReelTime</a></h1>
+      <nav class="header-right">
+        <a href="library.html" class="library-link">My Library</a>
+        <a href="signin.html" id="auth-link" class="auth-icon" title="Sign In">👤</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <div id="show-details">
+      <div class="loading">Loading...</div>
+    </div>
+  </main>
+
+  <script src="theme.js"></script>
+  <script src="details.js"></script>
+</body>
+</html>

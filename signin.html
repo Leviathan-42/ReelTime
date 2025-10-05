@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sign In - ReelTime</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <button id="theme-toggle" class="theme-toggle" aria-label="Toggle dark mode">
+    <span class="theme-icon">☀️</span>
+  </button>
+  <header>
+    <div class="header-layout">
+      <a href="index.html" class="back-link">← Browse Shows</a>
+      <h1><a href="index.html" class="logo">ReelTime</a></h1>
+      <nav class="header-right">
+        <a href="library.html" class="library-link">My Library</a>
+        <a href="signin.html" id="auth-link" class="auth-icon active" title="Sign In">👤</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <div class="auth-container">
+      <div class="auth-box">
+        <h2>Welcome to ReelTime</h2>
+        <p class="auth-subtitle">Sign in to sync your ratings and favorites</p>
+
+        <div id="auth-status"></div>
+
+        <div id="sign-in-form">
+          <input type="email" id="email" placeholder="Email" required>
+          <input type="password" id="password" placeholder="Password" required>
+
+          <button id="sign-in-btn" class="auth-btn">Sign In</button>
+          <button id="sign-up-btn" class="auth-btn secondary">Create Account</button>
+          <button id="google-sign-in-btn" class="auth-btn google">
+            <span>🔍</span> Sign in with Google
+          </button>
+        </div>
+
+        <div id="user-profile" style="display: none;">
+          <p>Signed in as: <strong id="user-email"></strong></p>
+          <button id="sign-out-btn" class="auth-btn">Sign Out</button>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <script src="theme.js"></script>
+  <!-- Firebase SDKs -->
+  <script type="module" src="signin.js"></script>
+</body>
+</html>
