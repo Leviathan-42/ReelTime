@@ -1,5 +1,6 @@
 const urlParams = new URLSearchParams(window.location.search);
 const showId = urlParams.get('id');
+const API_URL = window.location.origin;
 
 let userRating = 0;
 let isFavorite = false;
@@ -12,7 +13,7 @@ async function loadShowDetails() {
   }
 
   try {
-    const response = await fetch(`http://localhost:5000/api/tvshow/${showId}`);
+    const response = await fetch(`${API_URL}/api/tvshow/${showId}`);
     const show = await response.json();
 
     // Load saved ratings from localStorage

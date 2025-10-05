@@ -1,14 +1,15 @@
 let currentPage = 1;
 let currentSearch = '';
+const API_URL = window.location.origin;
 
 async function loadShows(page = 1, searchQuery = '') {
   try {
     const container = document.getElementById('shows-container');
     container.innerHTML = '<p style="color: white; text-align: center;">Loading...</p>';
 
-    let url = `http://localhost:5000/api/tvshows?page=${page}`;
+    let url = `${API_URL}/api/tvshows?page=${page}`;
     if (searchQuery) {
-      url = `http://localhost:5000/api/search?q=${encodeURIComponent(searchQuery)}&page=${page}`;
+      url = `${API_URL}/api/search?q=${encodeURIComponent(searchQuery)}&page=${page}`;
     }
 
     const response = await fetch(url);

@@ -57,9 +57,11 @@ async function loadLibrary() {
   }
 }
 
+const API_URL = window.location.origin;
+
 async function fetchShowById(id) {
   try {
-    const response = await fetch(`http://localhost:5000/api/tvshow/${id}`);
+    const response = await fetch(`${API_URL}/api/tvshow/${id}`);
     if (!response.ok) return null;
     return await response.json();
   } catch (error) {
